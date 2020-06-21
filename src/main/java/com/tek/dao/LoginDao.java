@@ -1,5 +1,6 @@
 package com.tek.dao;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -24,14 +25,18 @@ public class LoginDao {
 
 			Root<Login> root = query.from(Login.class);
 			CriteriaQuery<Login> cQuery = query.select(root).where(criteriaBuilder.equal(root.get("userName"), user));
-			Login login = session.createQuery(cQuery).getSingleResult();
-			log.info(">> login username >> " + login.getUserName());
-			if (login != null) {
-				if (login.getUserName().equals(user) && login.getPassword().equals(password)) {
-					return true;
-				} else {
-					return false;
+			try {
+				Login login = session.createQuery(cQuery).getSingleResult();
+				log.info(">> login username >> " + login.getUserName());
+				if (login != null) {
+					if (login.getUserName().equals(user) && login.getPassword().equals(password)) {
+						return true;
+					} else {
+						return false;
+					}
 				}
+			}catch(NoResultException ex){
+				return false;
 			}
 		}
 		return false;
