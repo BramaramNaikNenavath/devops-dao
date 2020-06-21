@@ -17,7 +17,7 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		log.info(">> HibernateUtil buildSessionFactory() invoked >>");
 		StandardServiceRegistryBuilder serviceBuilder = new StandardServiceRegistryBuilder();
-		StandardServiceRegistry serviceRegistry = serviceBuilder.configure().build();
+		StandardServiceRegistry serviceRegistry = serviceBuilder.configure("hibernate.cfg.xml").build();
 		MetadataBuilder metaDataBuilder = new MetadataSources(serviceRegistry).getMetadataBuilder();
 		Metadata metaData = metaDataBuilder.build();
 		SessionFactory factory = metaData.getSessionFactoryBuilder().build();
